@@ -11,6 +11,10 @@ export enum MutationTypes {
 
 export const mutations: MutationTree<State> = {
   [MutationTypes.UPDATE_CURRENT_AMOUNT](state: State, payload: number): void {
+    if (!Number.isInteger(payload)) {
+      state.amount = Math.round(payload);
+      return;
+    }
     state.amount = payload;
   },
   [MutationTypes.UPDATE_CURRENCY](state: State, payload: Currency['code']): void {

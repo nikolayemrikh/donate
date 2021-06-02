@@ -11,7 +11,7 @@
     <div class="input-group">
       <span class="input-sign">{{ getCurrencySign(currency) }}</span>
       <label class="input-label">
-        <input class="amount-input" v-model="currentAmount" />
+        <input class="amount-input" v-model.number="currentAmount" type="number" min="1" />
       </label>
       <select v-model="currency">
         <option v-for="currency in currenciesByCode" :key="currency.code">
@@ -46,12 +46,37 @@ export default class DonateForm extends Vue {
     return currenciesByCode[currency].symbol;
   }
 
+  // handleInput(evt) {
+  //   const val = evt.target.value;
+  //   console.log(this)
+  //   const isAllowed = Number.isInteger(Number(val));
+  //   if (!isAllowed) {
+  //     evt.preventDefault();
+  //     return;
+  //   }
+  //     this.$store.commit('updateCurrentAmount', Number(val));
+  // }
+  
+  // handleKeydown = (evt) => {
+  //   console.log(evt)
+  //   const char = String.fromCharCode(event.keyCode)
+  //   if (!/[0-9]/.test(char)) {
+  //     event.preventDefault()
+  //   }
+  // }
+
   get currentAmount(): string {
+    // console.log(this.$store.state.amount)
     return this.$store.state.amount;
   }
 
-  set currentAmount(amount: number): string {
-    this.$store.commit('updateCurrentAmount', amount);
+  set currentAmount(val: string): string {
+    const isAllowed = Number.isInteger(Number(val));
+    // console.log(isAllowed, val)
+    // if (isAllowed) {
+    //   this.$store.commit('updateCurrentAmount', Number(val));
+    // }
+    this.$store.commit('updateCurrentAmount', isAllowed ? this.$store.state.amount : Number(val));
   }
   
   get presets() {
