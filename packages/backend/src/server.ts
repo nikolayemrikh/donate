@@ -26,6 +26,9 @@ server.on("error", (err) => {
   console.error(err);
 });
 
+console.log(`${__dirname}/public`);
+
+app.use("/", express.static(`${__dirname}/../public`));
 app.use("/donate", getDonateRoute());
 
 server.listen(port);

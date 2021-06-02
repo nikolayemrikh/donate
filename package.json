@@ -4,7 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "link-frontend": "ln -s $(pwd)/packages/frontend/dist $(pwd)/packages/backend/public",
+    "bootstrap:dev": "lerna bootstrap",
+    "bootstrap:prod": "lerna bootstrap -- --production",
+    "build:frontend": "cd packages/frontend && rm -rf dist && npm run build && cd ../..",
+    "build:backend": "cd packages/backend && rm -rf build && npm run build && cp .env ./build/ && cd ../..",
+    "build": "npm run build:frontend && npm run build:backend",
+    "up": "npm i && npm run bootstrap:prod && npm run build && npm run link-frontend",
+    "start:prod": "cd packages/backend/build && node server.js"
   },
   "author": "",
   "license": "ISC",

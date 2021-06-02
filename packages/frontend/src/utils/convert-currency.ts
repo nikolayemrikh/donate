@@ -11,8 +11,6 @@ export const convertCurrency =
       const length = converted.toString().length;
       const mod = 10 ** (length - 2);
       const rem = converted % mod;
-      console.log(rem);
-      
       return converted + mod - rem;
     }
     return converted;
