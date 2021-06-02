@@ -11,7 +11,7 @@
     <div class="input-group">
       <span class="input-sign">{{ getCurrencySign(currency) }}</span>
       <label class="input-label">
-        <input class="amount-input" v-model.number="currentAmount" type="number" min="1" />
+        <input class="amount-input" :value="currentAmount" @input="handleInput" />
       </label>
       <select v-model="currency">
         <option v-for="currency in currenciesByCode" :key="currency.code">
@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { mapState } from "vuex";
 import { presets } from "@/store/presets";
 import { Currency } from "@/types/currency";
@@ -46,37 +46,21 @@ export default class DonateForm extends Vue {
     return currenciesByCode[currency].symbol;
   }
 
-  // handleInput(evt) {
-  //   const val = evt.target.value;
-  //   console.log(this)
-  //   const isAllowed = Number.isInteger(Number(val));
-  //   if (!isAllowed) {
-  //     evt.preventDefault();
-  //     return;
-  //   }
-  //     this.$store.commit('updateCurrentAmount', Number(val));
-  // }
-  
-  // handleKeydown = (evt) => {
-  //   console.log(evt)
-  //   const char = String.fromCharCode(event.keyCode)
-  //   if (!/[0-9]/.test(char)) {
-  //     event.preventDefault()
-  //   }
-  // }
+  handleInput(evt) {
+    const val = evt.target.value.replace(/[^\d]/g, "");
+    evt.target.value = val;
+    console.log(val)
+    this.$store.commit('updateCurrentAmount', Number(val));
+    
+  }
 
   get currentAmount(): string {
-    // console.log(this.$store.state.amount)
+    console.log(this.$store.state.amount)
     return this.$store.state.amount;
   }
 
   set currentAmount(val: string): string {
-    const isAllowed = Number.isInteger(Number(val));
-    // console.log(isAllowed, val)
-    // if (isAllowed) {
-    //   this.$store.commit('updateCurrentAmount', Number(val));
-    // }
-    this.$store.commit('updateCurrentAmount', isAllowed ? this.$store.state.amount : Number(val));
+    this.$store.commit('updateCurrentAmount', Number(val));
   }
   
   get presets() {
@@ -93,7 +77,6 @@ export default class DonateForm extends Vue {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .donate {
   display: grid;
