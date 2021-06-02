@@ -8,9 +8,12 @@ export const convertCurrency =
       (amount / currenciesByCode[from].rate) * currenciesByCode[to].rate
     );
     if (round) {
-      // const length = converted.toString().length;
-      const rem = converted % 10;
-      return converted - rem;
+      const length = converted.toString().length;
+      const mod = 10 ** (length - 2);
+      const rem = converted % mod;
+      console.log(rem);
+      
+      return converted + mod - rem;
     }
     return converted;
   };

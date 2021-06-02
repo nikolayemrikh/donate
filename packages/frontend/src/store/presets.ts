@@ -4,7 +4,7 @@ import { currencies, defaultCurrency, dollarsPresets } from "./defaults";
 
 export const presets: Presets = currencies.reduce((acc: Presets, c) => {
   acc[c.code] = dollarsPresets.map(
-    convertCurrency(defaultCurrency, c.code, true)
+    convertCurrency(defaultCurrency, c.code, c.code !== defaultCurrency)
   );
   return acc;
 }, {});
