@@ -13,7 +13,6 @@ export const getDonateRoute = (): Router => {
       if (E.isLeft(donateRes)) {
         return res.json({ ok: false, errorMessage: donateRes.left }).status(200);
       }
-      const donate = donateRes.right;
 
       res.json({ ok: true }).status(200);
     } catch (err) {

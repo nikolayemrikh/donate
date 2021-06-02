@@ -34,9 +34,9 @@ export const actions: ActionTree<State, State> & Actions = {
   async [ActionTypes.SUBMIT_DONATE]({state, commit}): Promise<void> {
     try {
       const {amount, currency} = state;
-      const data = await post(ApiRoutes.DONATE, {amount, currency})
+      const {data} = await post(ApiRoutes.DONATE, {amount, currency})
       if (!isDonateRes(data)) throw new Error('Wrong server response');
-
+      
       const {ok} = data;
       if (ok) {
         commit(MutationTypes.DONATE_SUCCESS, undefined);

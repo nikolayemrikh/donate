@@ -1,6 +1,7 @@
 import http from "http";
 import dotenv from "dotenv";
 import express from "express";
+import cors from "cors";
 import { getDonateRoute } from "./routes/donate";
 import mongoose from "mongoose";
 
@@ -16,6 +17,7 @@ mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
 const app = express();
 
 const server = http.createServer(app);
+app.use(cors());
 app.use(express.json());
 server.on("listening", () => {
   console.info(`Donation server started on port ${port}`);
