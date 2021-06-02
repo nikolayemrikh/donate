@@ -5,12 +5,18 @@ import { Currency } from "./currency";
 export interface State {
   amount: number;
   currency: Currency['code'];
+  donationResult?: {
+    success: boolean;
+    errorMessage?: string;
+  }
 }
 
 
 export interface Mutations {
   [MutationTypes.UPDATE_CURRENT_AMOUNT](state: State, payload: number): void;
   [MutationTypes.UPDATE_CURRENCY](state: State, payload: Currency['code']): void;
+  [MutationTypes.DONATE_ERROR](state: State, payload: string): void;
+  [MutationTypes.DONATE_SUCCESS](state: State, payload: undefined): void;
 }
 
 type AugmentedActionContext = {
@@ -23,6 +29,7 @@ type AugmentedActionContext = {
 export interface Actions {
   [ActionTypes.UPDATE_CURRENT_AMOUNT]({commit}: AugmentedActionContext, payload: number): void;
   [ActionTypes.UPDATE_CURRENCY]({commit}: AugmentedActionContext, payload: Currency['code']): void;
+  [ActionTypes.SUBMIT_DONATE]({commit}: AugmentedActionContext, payload: undefined): Promise<void>;
 }
 
 export type Store = Omit<

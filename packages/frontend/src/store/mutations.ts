@@ -10,5 +10,16 @@ export const mutations: MutationTree<State> & Mutations = {
   },
   [MutationTypes.UPDATE_CURRENCY](state, currency) {
     state.currency = currency;
+  },
+  [MutationTypes.DONATE_SUCCESS](state) {
+    state.donationResult = {
+      success: true
+    };
+  },
+  [MutationTypes.DONATE_ERROR](state) {
+    state.donationResult = {
+      success: false,
+      errorMessage: "Произошла неизвестная ошибка"
+    };
   }
 }

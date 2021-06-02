@@ -1,5 +1,5 @@
 <template>
-  <form class="donate">
+  <form class="donate" @submit="handleSubmit">
     <ul class="presets">
       <li v-for="amount in presets" :key="amount">
         <input :id="'a-' + amount" type="radio" name="amount" :value="amount" v-model="currentAmount"> 
@@ -49,6 +49,11 @@ export default class DonateForm extends Vue {
     const val = evt.target.value.replace(/[^\d]/g, "");
     evt.target.value = val;
     this.$typedStore.dispatch(ActionTypes.UPDATE_CURRENT_AMOUNT, Number(val));
+  }
+  
+  handleSubmit(evt) {
+    evt.preventDefault();
+    this.$typedStore.dispatch(ActionTypes.SUBMIT_DONATE, undefined);
   }
 
   get currentAmount(): string {

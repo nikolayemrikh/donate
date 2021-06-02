@@ -1,8 +1,17 @@
-import { ActionTypes, MutationTypes } from "@/enums";
+import { api, post } from "@/api";
+import { ActionTypes, ApiRoutes, MutationTypes } from "@/enums";
 import { Actions, State } from "@/types/store";
 import { convertCurrency } from "@/utils/convert-currency";
+import axios from "axios";
 import { ActionTree } from "vuex";
 import { presets } from "./presets";
+
+interface DonateRes {
+  ok: boolean;
+}
+const isDonateRes = (data: unknown): data is DonateRes => {
+  return typeof data === 'object' && typeof (data as any)?.ok === "boolean"; 
+}
 
 export const actions: ActionTree<State, State> & Actions = {
   [ActionTypes.UPDATE_CURRENT_AMOUNT]({commit}, payload): void {
@@ -21,5 +30,22 @@ export const actions: ActionTree<State, State> & Actions = {
 
     commit(MutationTypes.UPDATE_CURRENCY, currency);
     commit(MutationTypes.UPDATE_CURRENT_AMOUNT, amount);
+  },
+  async [ActionTypes.SUBMIT_DONATE]({state, commit}): Promise<void> {
+    try {
+      const {amount, currency} = state;
+      const data = await post(ApiRoutes.DONATE, {amount, currency})
+      if (!isDonateRes(data)) throw new Error('Неверный ответ сервера');
+
+      const {ok} = data;
+      if (ok) {
+        commit(MutationTypes.DONATE_SUCCESS, undefined);
+      } else {
+        commit(MutationTypes.DONATE_ERROR, "Произошла ошибка при отправке пожертвования");
+      }
+    } catch (err) {
+      // log err.message
+      commit(MutationTypes.DONATE_ERROR, "Произошла неизвестная ошибка при отправке пожертвования");
+    }
   }
 }
