@@ -10,9 +10,8 @@ Vue.config.productionTip = false;
 Object.defineProperty(Vue.prototype, "$typedStore", {
   get(): Store<State> {
     return this.$store;
-  }
+  },
 });
-
 
 new Vue({
   store,

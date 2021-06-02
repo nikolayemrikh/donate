@@ -1,8 +1,8 @@
 export interface Currency {
-	name: string;
-	code: string;
-	symbol: string;
-	rate: number
-};
+  name: string;
+  code: string;
+  symbol: string;
+  rate: number;
+}
 
-export type Presets = Record<Currency['code'], readonly number[]>;
+export type Presets = Record<Currency["code"], readonly number[]>;

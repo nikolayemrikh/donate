@@ -12,7 +12,7 @@ const store = new Vuex.Store<State>({
   state: {
     amount: presets[defaultCurrency][0],
     currency: defaultCurrency,
-    donationResult: undefined
+    donationResult: undefined,
   },
   mutations,
   actions,

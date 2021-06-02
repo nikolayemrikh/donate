@@ -1,8 +1,6 @@
 import { MutationTypes } from "@/enums";
 import { Mutations, State } from "@/types/store";
-import { convertCurrency } from "@/utils/convert-currency";
 import { MutationTree } from "vuex";
-import { presets } from "./presets";
 
 export const mutations: MutationTree<State> & Mutations = {
   [MutationTypes.UPDATE_CURRENT_AMOUNT](state, amount) {
@@ -13,14 +11,14 @@ export const mutations: MutationTree<State> & Mutations = {
   },
   [MutationTypes.DONATE_SUCCESS](state) {
     state.donationResult = {
-      success: true
+      success: true,
     };
   },
   [MutationTypes.DONATE_ERROR](state, errorMessage) {
     state.donationResult = {
       success: false,
-      errorMessage
+      errorMessage,
     };
     console.log(state.donationResult);
-  }
-}
+  },
+};

@@ -2,14 +2,27 @@
   <form class="donate" @submit="handleSubmit">
     <ul class="presets">
       <li v-for="amount in presets" :key="amount">
-        <input :id="'a-' + amount" type="radio" name="amount" :value="amount" v-model="currentAmount"> 
-        <label :for="'a-' + amount">{{getCurrencySign(currency)}}{{ formatAmount(amount, currency) }}</label>
+        <input
+          :id="'a-' + amount"
+          type="radio"
+          name="amount"
+          :value="amount"
+          v-model="currentAmount"
+        />
+        <label :for="'a-' + amount"
+          >{{ getCurrencySign(currency)
+          }}{{ formatAmount(amount, currency) }}</label
+        >
       </li>
     </ul>
     <div class="input-group">
       <span class="input-sign">{{ getCurrencySign(currency) }}</span>
       <label class="input-label">
-        <input class="amount-input" :value="currentAmount" @input="handleInput" />
+        <input
+          class="amount-input"
+          :value="currentAmount"
+          @input="handleInput"
+        />
       </label>
       <select v-model="currency">
         <option v-for="currency in currenciesByCode" :key="currency.code">
@@ -19,18 +32,21 @@
     </div>
 
     <div>
-      <button class="submit-button" type="submit" :disabled="!currentAmount">donate</button>
+      <button class="submit-button" type="submit" :disabled="!currentAmount">
+        donate
+      </button>
     </div>
     <div class="message" v-if="donationResult">
       <span v-if="donationResult.success">Thank you for your donation!</span>
-      <span v-if="!donationResult.success">{{donationResult.errorMessage}}</span>
+      <span v-if="!donationResult.success">{{
+        donationResult.errorMessage
+      }}</span>
     </div>
   </form>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import { mapState } from "vuex";
+import { Component, Vue } from "vue-property-decorator";
 import { presets } from "@/store/presets";
 import { Currency } from "@/types/currency";
 import { State } from "@/types/store";
@@ -41,22 +57,24 @@ import { ActionTypes } from "@/enums";
 export default class DonateForm extends Vue {
   readonly currenciesByCode = currenciesByCode;
 
-  formatAmount = (amount: number, currency: Currency['code']): string => {
-    const sign = this.getCurrencySign(currency);
-    return new Intl.NumberFormat('en-US', {style: 'decimal', currency}).format(amount);
-  }
+  formatAmount = (amount: number, currency: Currency["code"]): string => {
+    return new Intl.NumberFormat("en-US", {
+      style: "decimal",
+      currency,
+    }).format(amount);
+  };
 
-  getCurrencySign = (currency: Currency['code']): string => {
+  getCurrencySign = (currency: Currency["code"]): string => {
     return currenciesByCode[currency].symbol;
-  }
+  };
 
-  handleInput(evt) {
-    const val = evt.target.value.replace(/[^\d]/g, "");
-    evt.target.value = val;
+  handleInput(evt: Event): void {
+    const val = (evt.target as HTMLFormElement).value.replace(/[^\d]/g, "");
+    (evt.target as HTMLFormElement).value = val;
     this.$typedStore.dispatch(ActionTypes.UPDATE_CURRENT_AMOUNT, Number(val));
   }
-  
-  handleSubmit(evt) {
+
+  handleSubmit(evt: Event): void {
     evt.preventDefault();
     this.$typedStore.dispatch(ActionTypes.SUBMIT_DONATE, undefined);
   }
@@ -68,20 +86,20 @@ export default class DonateForm extends Vue {
   set currentAmount(val: string) {
     this.$typedStore.dispatch(ActionTypes.UPDATE_CURRENT_AMOUNT, Number(val));
   }
-  
-  get presets() {
+
+  get presets(): readonly number[] {
     return presets[this.$typedStore.state.currency];
   }
 
-  get currency() {
+  get currency(): Currency["code"] {
     return this.$typedStore.state.currency;
   }
-  
-  set currency(currency: Currency['code']) {
+
+  set currency(currency: Currency["code"]) {
     this.$typedStore.dispatch(ActionTypes.UPDATE_CURRENCY, currency);
   }
 
-  get donationResult(): State['donationResult'] {
+  get donationResult(): State["donationResult"] {
     return this.$typedStore.state.donationResult;
   }
 }

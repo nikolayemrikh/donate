@@ -3,7 +3,7 @@ import { ApiRoutes } from "../enums";
 
 export interface DonateReqData {
   amount: number;
-  currency: Currency['code'];
+  currency: Currency["code"];
 }
 
 export interface RouteData {
