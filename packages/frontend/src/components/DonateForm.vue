@@ -2,10 +2,8 @@
   <form class="donate">
     <ul class="presets">
       <li v-for="amount in presets" :key="amount">
-        <label>
-          {{getCurrencySign(currency)}}{{ formatAmount(amount, currency) }}
-          <input type="radio" name="amount" :value="amount" v-model="currentAmount"> 
-        </label>
+        <input :id="'a-' + amount" type="radio" name="amount" :value="amount" v-model="currentAmount"> 
+        <label :for="'a-' + amount">{{getCurrencySign(currency)}}{{ formatAmount(amount, currency) }}</label>
       </li>
     </ul>
     <div class="input-group">
@@ -83,11 +81,39 @@ export default class DonateForm extends Vue {
 }
 
 .presets {
+  $textColor: #ffffff;
+  $bgColor: #5667cb;
+
   display: grid;
   margin: 0;
   padding: 0;
   grid-template-columns: repeat(3, auto);
   gap: 10px;
+
+  input[type="radio"] {
+    opacity: 0;
+    position: fixed;
+    width: 0;
+
+    &:checked + label,
+    &:active + label {
+      background-color: $bgColor;
+      color: $textColor;
+    }
+  }
+
+  label {
+    display: block;
+    padding: 10px 5px;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+    text-align: center;
+
+    &:hover {
+      background-color: lighten($bgColor, 10%);
+      color: $textColor;
+    }
+  }
 }
 
 .submit-button {
