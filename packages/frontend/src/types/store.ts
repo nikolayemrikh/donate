@@ -5,10 +5,10 @@ import { Currency } from "./currency";
 export interface State {
   amount: number;
   currency: Currency['code'];
-  donationResult?: {
+  donationResult: {
     success: boolean;
     errorMessage?: string;
-  }
+  } | undefined
 }
 
 

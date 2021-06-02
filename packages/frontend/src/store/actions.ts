@@ -35,17 +35,17 @@ export const actions: ActionTree<State, State> & Actions = {
     try {
       const {amount, currency} = state;
       const data = await post(ApiRoutes.DONATE, {amount, currency})
-      if (!isDonateRes(data)) throw new Error('Неверный ответ сервера');
+      if (!isDonateRes(data)) throw new Error('Wrong server response');
 
       const {ok} = data;
       if (ok) {
         commit(MutationTypes.DONATE_SUCCESS, undefined);
       } else {
-        commit(MutationTypes.DONATE_ERROR, "Произошла ошибка при отправке пожертвования");
+        commit(MutationTypes.DONATE_ERROR, "Error happened");
       }
     } catch (err) {
       // log err.message
-      commit(MutationTypes.DONATE_ERROR, "Произошла неизвестная ошибка при отправке пожертвования");
+      commit(MutationTypes.DONATE_ERROR, "Unknown error happened");
     }
   }
 }

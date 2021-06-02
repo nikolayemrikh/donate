@@ -11,7 +11,8 @@ Vue.use(Vuex);
 const store = new Vuex.Store<State>({
   state: {
     amount: presets[defaultCurrency][0],
-    currency: defaultCurrency
+    currency: defaultCurrency,
+    donationResult: undefined
   },
   mutations,
   actions,

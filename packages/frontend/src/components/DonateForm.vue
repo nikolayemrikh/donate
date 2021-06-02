@@ -21,6 +21,10 @@
     <div>
       <button class="submit-button" type="submit" :disabled="!currentAmount">donate</button>
     </div>
+    <div class="message" v-if="donationResult">
+      <span v-if="donationResult.success">Thank you for your donation!</span>
+      <span v-if="!donationResult.success">{{donationResult.errorMessage}}</span>
+    </div>
   </form>
 </template>
 
@@ -29,6 +33,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { mapState } from "vuex";
 import { presets } from "@/store/presets";
 import { Currency } from "@/types/currency";
+import { State } from "@/types/store";
 import { currenciesByCode } from "@/store/defaults";
 import { ActionTypes } from "@/enums";
 
@@ -57,7 +62,7 @@ export default class DonateForm extends Vue {
   }
 
   get currentAmount(): string {
-    return this.$store.state.amount;
+    return this.$typedStore.state.amount.toString();
   }
 
   set currentAmount(val: string) {
@@ -65,15 +70,19 @@ export default class DonateForm extends Vue {
   }
   
   get presets() {
-    return presets[this.$store.state.currency];
+    return presets[this.$typedStore.state.currency];
   }
 
   get currency() {
-    return this.$store.state.currency;
+    return this.$typedStore.state.currency;
   }
   
   set currency(currency: Currency['code']) {
     this.$typedStore.dispatch(ActionTypes.UPDATE_CURRENCY, currency);
+  }
+
+  get donationResult(): State['donationResult'] {
+    return this.$typedStore.state.donationResult;
   }
 }
 </script>
@@ -166,5 +175,9 @@ $activeColor: #5667cb;
 
 .input-label {
   flex: 1 0 auto;
+}
+
+.message {
+  text-align: center;
 }
 </style>

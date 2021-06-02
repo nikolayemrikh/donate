@@ -16,10 +16,11 @@ export const mutations: MutationTree<State> & Mutations = {
       success: true
     };
   },
-  [MutationTypes.DONATE_ERROR](state) {
+  [MutationTypes.DONATE_ERROR](state, errorMessage) {
     state.donationResult = {
       success: false,
-      errorMessage: "Произошла неизвестная ошибка"
+      errorMessage
     };
+    console.log(state.donationResult);
   }
 }
