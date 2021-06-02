@@ -30,11 +30,10 @@ import { mapState } from "vuex";
 import { presets } from "@/store/presets";
 import { Currency } from "@/types/currency";
 import { currenciesByCode } from "@/store/defaults";
+import { ActionTypes } from "@/enums";
 
 @Component
 export default class DonateForm extends Vue {
-  // @Prop() private msg!: string;
-
   readonly currenciesByCode = currenciesByCode;
 
   formatAmount = (amount: number, currency: Currency['code']): string => {
@@ -49,18 +48,15 @@ export default class DonateForm extends Vue {
   handleInput(evt) {
     const val = evt.target.value.replace(/[^\d]/g, "");
     evt.target.value = val;
-    console.log(val)
-    this.$store.commit('updateCurrentAmount', Number(val));
-    
+    this.$typedStore.dispatch(ActionTypes.UPDATE_CURRENT_AMOUNT, Number(val));
   }
 
   get currentAmount(): string {
-    console.log(this.$store.state.amount)
     return this.$store.state.amount;
   }
 
-  set currentAmount(val: string): string {
-    this.$store.commit('updateCurrentAmount', Number(val));
+  set currentAmount(val: string) {
+    this.$typedStore.dispatch(ActionTypes.UPDATE_CURRENT_AMOUNT, Number(val));
   }
   
   get presets() {
@@ -72,7 +68,7 @@ export default class DonateForm extends Vue {
   }
   
   set currency(currency: Currency['code']) {
-    this.$store.commit('updateCurrency', currency);
+    this.$typedStore.dispatch(ActionTypes.UPDATE_CURRENCY, currency);
   }
 }
 </script>

@@ -1,9 +1,9 @@
-import { State } from "@/types/state";
+import { State } from "@/types/store";
 import Vue from "vue";
 import Vuex from "vuex";
 import { actions } from "./actions";
 import { defaultCurrency } from "./defaults";
-import { mutations, MutationTypes } from "./mutations";
+import { mutations } from "./mutations";
 import { presets } from "./presets";
 
 Vue.use(Vuex);
@@ -17,6 +17,5 @@ const store = new Vuex.Store<State>({
   actions,
   modules: {},
 });
-
 
 export default store;
