@@ -18,7 +18,9 @@
       </select>
     </div>
 
-    <button class="submit-button" type="submit">donate</button>
+    <div>
+      <button class="submit-button" type="submit" :disabled="!currentAmount">donate</button>
+    </div>
   </form>
 </template>
 
@@ -72,6 +74,9 @@ export default class DonateForm extends Vue {
 </script>
 
 <style scoped lang="scss">
+$textColor: #ffffff;
+$activeColor: #5667cb;
+
 .donate {
   display: grid;
   width: 300px;
@@ -81,9 +86,6 @@ export default class DonateForm extends Vue {
 }
 
 .presets {
-  $textColor: #ffffff;
-  $bgColor: #5667cb;
-
   display: grid;
   margin: 0;
   padding: 0;
@@ -95,10 +97,14 @@ export default class DonateForm extends Vue {
     position: fixed;
     width: 0;
 
-    &:checked + label,
-    &:active + label {
-      background-color: $bgColor;
+    &:checked + label {
       color: $textColor;
+      background-color: darken($activeColor, 5%);
+    }
+
+    &:active + label {
+      color: $textColor;
+      background-color: lighten($activeColor, 5%);
     }
   }
 
@@ -110,14 +116,28 @@ export default class DonateForm extends Vue {
     text-align: center;
 
     &:hover {
-      background-color: lighten($bgColor, 10%);
+      background-color: lighten($activeColor, 10%);
       color: $textColor;
     }
   }
 }
 
 .submit-button {
+  width: 100%;
+  padding: 10px;
   text-transform: uppercase;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+  color: $textColor;
+  background-color: $activeColor;
+
+  &:hover {
+    background-color: lighten($activeColor, 5%);
+  }
+
+  &:active {
+    background-color: darken($activeColor, 5%);
+  }
 }
 
 .input-group {
